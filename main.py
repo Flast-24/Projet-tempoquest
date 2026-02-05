@@ -1,1 +1,2 @@
-print("Projet timeloop - NSI")
+print("Projet tempoquest - NSI")
+print("i am a god")
