@@ -1,0 +1,17 @@
+Premier Compte-Rendu : Analyse et Architecture
+
+1. Analyse du besoin
+Objectif : Créer un jeu de plateforme avec une mécanique de voyage temporel.
+Problématique : Comment mémoriser les positions passées et interagir avec un "ancien soi" ?
+Solution retenue : Utilisation d'une liste history pour stocker les coordonnées du joueur à chaque frame.
+
+2. Choix technologiques
+Langage : Python.
+Bibliothèque : Arcade, choisie pour sa gestion simplifiée et de la physique de plateforme. (et parce que pygame est déconseillé)
+
+3. Modélisation
+	Algorithme de saut temporel : 
+	1. Si une touche est pressée et assez d'historique.
+	2. Créer un Sprite à la position actuelle du joueur.
+	3. Ajouter ce sprite à la liste des obstacles.
+	4. Téléporter le joueur à une autre position (position d'il y a 5 seconde).
