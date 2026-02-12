@@ -1,0 +1,16 @@
+deuxieme compte rendu: designs niveau et création d'un code
+
+
+  1 : création niveau sur paint 
+
+niveau 1 : niveau facile avec des obstacles placée au meilleurs niveau pour rendre le jeu jouable, porte pour le second niveau a atteindre grace au sprite 
+qui réinitialise le joueur 5 seconde avant, le chronometre représenter par une horloge qui tourne 
+
+niveau 2 : niveau plus difficile avec des pieges mis en place et des sauts de plus en plus grand, une porte en hauteur pour acceder au prochain niveau 
+
+2 : création du début du code pour le reaset du personnage  
+
+    1 . création de la map 
+    2 . mise en place du sprite du personnage 
+    3 . vérification du sprite 
+
