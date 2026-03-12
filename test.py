@@ -104,476 +104,365 @@ class GameView(arcade.View):
 
 "ici je met le code que j'ai crée pendant les vacances"
 
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jeu de Plateforme - Niveau 1</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            font-family: 'Arial', sans-serif;
-        }
-        
-        #gameContainer {
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 10px 50px rgba(0,0,0,0.3);
-            padding: 20px;
-        }
-        
-        canvas {
-            display: block;
-            border: 3px solid #333;
-            border-radius: 5px;
-            background: #8B9BB3;
-        }
-        
-        #instructions {
-            margin-top: 15px;
-            text-align: center;
-            color: #333;
-        }
-        
-        #instructions h2 {
-            margin-bottom: 10px;
-            color: #667eea;
-        }
-        
-        #instructions p {
-            margin: 5px 0;
-            font-size: 14px;
-        }
-        
-        .key {
-            display: inline-block;
-            background: #667eea;
-            color: white;
-            padding: 3px 8px;
-            border-radius: 3px;
-            font-weight: bold;
-            margin: 0 2px;
-        }
-    </style>
-</head>
-<body>
-    <div id="gameContainer">
-        <canvas id="gameCanvas" width="1024" height="768"></canvas>
-        <div id="instructions">
-            <h2>🎮 Contrôles</h2>
-            <p><span class="key">←</span> <span class="key">→</span> Déplacer | <span class="key">ESPACE</span> Sauter | <span class="key">R</span> Recommencer</p>
-            <p>⏰ Atteignez la porte verte avant la fin du compte à rebours (30s) !</p>
-        </div>
-    </div>
+"""
+Jeu de Plateforme - Niveau 1
+Bibliothèque: Python Arcade
+Contrôles: Flèches directionnelles + Espace pour sauter
+Objectif: Atteindre la porte avant la fin du compte à rebours (30 secondes)
+"""
 
-    <script>
-        // Récupérer le canvas et le contexte
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
+import arcade
+import math
+
+# === CONSTANTES DU JEU ===
+SCREEN_WIDTH = 1024
+SCREEN_HEIGHT = 768
+SCREEN_TITLE = "Jeu de Plateforme - Niveau 1"
+
+# Constantes de physique
+GRAVITY = 1.0
+PLAYER_JUMP_SPEED = 20
+PLAYER_MOVEMENT_SPEED = 5
+
+# Couleurs
+BACKGROUND_COLOR = arcade.color.LIGHT_SLATE_GRAY
+PLATFORM_COLOR = arcade.color.DARK_GRAY
+PLAYER_COLOR = arcade.color.SAND_BROWN
+DOOR_COLOR = arcade.color.DARK_GREEN
+CLOCK_COLOR = arcade.color.BLACK
+
+# Temps du compte à rebours
+COUNTDOWN_TIME = 30
+
+
+class Player(arcade.Sprite):
+    """Classe pour le personnage joueur (bonhomme bâton)"""
+    
+    def __init__(self):
+        super().__init__()
         
-        // Constantes du jeu
-        const SCREEN_WIDTH = 1024;
-        const SCREEN_HEIGHT = 768;
-        const GRAVITY = 0.8;
-        const PLAYER_JUMP_SPEED = -15;
-        const PLAYER_MOVEMENT_SPEED = 5;
-        const COUNTDOWN_TIME = 30;
+        # Dimensions du personnage
+        self.width = 30
+        self.height = 50
+        self.color = PLAYER_COLOR
         
-        // État du jeu
-        let gameState = {
-            player: null,
-            platforms: [],
-            door: null,
-            timeLeft: COUNTDOWN_TIME,
-            gameOver: false,
-            levelComplete: false,
-            keys: {
-                left: false,
-                right: false,
-                space: false
-            }
-        };
+        # Position initiale (en bas à gauche)
+        self.center_x = 100
+        self.center_y = 100
         
-        // Classe Joueur
-        class Player {
-            constructor() {
-                this.x = 100;
-                this.y = 100;
-                this.width = 30;
-                this.height = 50;
-                this.velocityX = 0;
-                this.velocityY = 0;
-                this.onGround = false;
-                this.color = '#D2B48C';
-            }
-            
-            update() {
-                // Appliquer la gravité
-                this.velocityY += GRAVITY;
-                
-                // Déplacement horizontal
-                if (gameState.keys.left) {
-                    this.velocityX = -PLAYER_MOVEMENT_SPEED;
-                } else if (gameState.keys.right) {
-                    this.velocityX = PLAYER_MOVEMENT_SPEED;
-                } else {
-                    this.velocityX = 0;
-                }
-                
-                // Mettre à jour la position
-                this.x += this.velocityX;
-                this.y += this.velocityY;
-                
-                // Vérifier les collisions avec les plateformes
-                this.onGround = false;
-                for (let platform of gameState.platforms) {
-                    if (this.checkCollision(platform)) {
-                        // Collision par le dessus
-                        if (this.velocityY > 0 && this.y + this.height - this.velocityY <= platform.y) {
-                            this.y = platform.y - this.height;
-                            this.velocityY = 0;
-                            this.onGround = true;
-                        }
-                        // Collision par le dessous
-                        else if (this.velocityY < 0 && this.y - this.velocityY >= platform.y + platform.height) {
-                            this.y = platform.y + platform.height;
-                            this.velocityY = 0;
-                        }
-                        // Collision latérale gauche
-                        else if (this.velocityX > 0) {
-                            this.x = platform.x - this.width;
-                        }
-                        // Collision latérale droite
-                        else if (this.velocityX < 0) {
-                            this.x = platform.x + platform.width;
-                        }
-                    }
-                }
-                
-                // Limiter aux bords de l'écran
-                if (this.x < 0) this.x = 0;
-                if (this.x + this.width > SCREEN_WIDTH) this.x = SCREEN_WIDTH - this.width;
-            }
-            
-            checkCollision(rect) {
-                return this.x < rect.x + rect.width &&
-                       this.x + this.width > rect.x &&
-                       this.y < rect.y + rect.height &&
-                       this.y + this.height > rect.y;
-            }
-            
-            jump() {
-                if (this.onGround) {
-                    this.velocityY = PLAYER_JUMP_SPEED;
-                    this.onGround = false;
-                }
-            }
-            
-            draw() {
-                // Corps
-                ctx.fillStyle = this.color;
-                ctx.fillRect(this.x, this.y, this.width, this.height);
-                
-                // Contour
-                ctx.strokeStyle = '#000';
-                ctx.lineWidth = 2;
-                ctx.strokeRect(this.x, this.y, this.width, this.height);
-                
-                // Tête (cercle)
-                ctx.fillStyle = this.color;
-                ctx.beginPath();
-                ctx.arc(this.x + this.width/2, this.y - 10, 10, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.stroke();
-                
-                // Yeux
-                ctx.fillStyle = '#000';
-                ctx.beginPath();
-                ctx.arc(this.x + this.width/2 - 4, this.y - 12, 2, 0, Math.PI * 2);
-                ctx.arc(this.x + this.width/2 + 4, this.y - 12, 2, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
+        # Créer la forme visuelle
+        self.texture = self._create_player_texture()
+    
+    def _create_player_texture(self):
+        """Créer une texture simple pour le joueur"""
+        shape = arcade.create_rectangle_filled(
+            self.width // 2, self.height // 2,
+            self.width, self.height,
+            self.color
+        )
+        texture = arcade.Texture("player", shape.texture.image)
+        return texture
+
+
+class Platform(arcade.Sprite):
+    """Classe pour les plateformes/obstacles"""
+    
+    def __init__(self, x, y, width, height):
+        super().__init__()
+        self.center_x = x
+        self.center_y = y
+        self.width = width
+        self.height = height
+        self.color = PLATFORM_COLOR
         
-        // Classe Plateforme
-        class Platform {
-            constructor(x, y, width, height) {
-                this.x = x;
-                this.y = y;
-                this.width = width;
-                this.height = height;
-                this.color = '#4A4A4A';
-            }
-            
-            draw() {
-                // Plateforme
-                ctx.fillStyle = this.color;
-                ctx.fillRect(this.x, this.y, this.width, this.height);
-                
-                // Bordure supérieure claire
-                ctx.fillStyle = '#6A6A6A';
-                ctx.fillRect(this.x, this.y, this.width, 3);
-                
-                // Contour
-                ctx.strokeStyle = '#000';
-                ctx.lineWidth = 2;
-                ctx.strokeRect(this.x, this.y, this.width, this.height);
-            }
-        }
+        # Créer la texture
+        self.texture = self._create_platform_texture()
+    
+    def _create_platform_texture(self):
+        """Créer une texture pour la plateforme"""
+        shape = arcade.create_rectangle_filled(
+            self.width // 2, self.height // 2,
+            self.width, self.height,
+            self.color
+        )
+        texture = arcade.Texture("platform", shape.texture.image)
+        return texture
+
+
+class Door(arcade.Sprite):
+    """Classe pour la porte de sortie (objectif du niveau)"""
+    
+    def __init__(self, x, y):
+        super().__init__()
+        self.center_x = x
+        self.center_y = y
+        self.width = 60
+        self.height = 80
+        self.color = DOOR_COLOR
         
-        // Classe Porte
-        class Door {
-            constructor(x, y) {
-                this.x = x;
-                this.y = y;
-                this.width = 60;
-                this.height = 80;
-                this.color = '#228B22';
-            }
-            
-            draw() {
-                // Porte
-                ctx.fillStyle = this.color;
-                ctx.fillRect(this.x, this.y, this.width, this.height);
-                
-                // Contour
-                ctx.strokeStyle = '#000';
-                ctx.lineWidth = 3;
-                ctx.strokeRect(this.x, this.y, this.width, this.height);
-                
-                // Poignée
-                ctx.fillStyle = '#FFD700';
-                ctx.beginPath();
-                ctx.arc(this.x + this.width - 15, this.y + this.height/2, 5, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.stroke();
-                
-                // Détails (planches)
-                ctx.strokeStyle = '#1a6b1a';
-                ctx.lineWidth = 2;
-                ctx.beginPath();
-                ctx.moveTo(this.x + this.width/2, this.y);
-                ctx.lineTo(this.x + this.width/2, this.y + this.height);
-                ctx.stroke();
-            }
-            
-            checkCollision(player) {
-                return player.x < this.x + this.width &&
-                       player.x + player.width > this.x &&
-                       player.y < this.y + this.height &&
-                       player.y + player.height > this.y;
-            }
-        }
+        # Créer la texture
+        self.texture = self._create_door_texture()
+    
+    def _create_door_texture(self):
+        """Créer une texture pour la porte"""
+        shape = arcade.create_rectangle_filled(
+            self.width // 2, self.height // 2,
+            self.width, self.height,
+            self.color
+        )
+        texture = arcade.Texture("door", shape.texture.image)
+        return texture
+
+
+class GameView(arcade.View):
+    """Vue principale du jeu"""
+    
+    def __init__(self):
+        super().__init__()
         
-        // Fonction d'initialisation
-        function setupGame() {
-            // Créer le joueur
-            gameState.player = new Player();
-            
-            // Créer les plateformes
-            gameState.platforms = [];
-            
-            // Sol
-            gameState.platforms.push(new Platform(0, SCREEN_HEIGHT - 50, SCREEN_WIDTH, 50));
-            
-            // Plateforme de départ (bas gauche)
-            gameState.platforms.push(new Platform(50, SCREEN_HEIGHT - 150, 150, 20));
-            
-            // Rampe montante (plusieurs plateformes)
-            for (let i = 0; i < 5; i++) {
-                let x = 250 + i * 80;
-                let y = SCREEN_HEIGHT - 250 - i * 80;
-                gameState.platforms.push(new Platform(x, y, 100, 20));
-            }
-            
-            // Plateforme du milieu
-            gameState.platforms.push(new Platform(650, SCREEN_HEIGHT - 450, 120, 20));
-            
-            // Plateforme haute (sous la porte)
-            gameState.platforms.push(new Platform(800, SCREEN_HEIGHT - 650, 150, 20));
-            
-            // Créer la porte
-            gameState.door = new Door(820, SCREEN_HEIGHT - 730);
-            
-            // Réinitialiser les variables
-            gameState.timeLeft = COUNTDOWN_TIME;
-            gameState.gameOver = false;
-            gameState.levelComplete = false;
-        }
+        # Listes de sprites
+        self.player_list = None
+        self.platform_list = None
+        self.door_list = None
         
-        // Dessiner l'horloge
-        function drawClock() {
-            const clockX = 80;
-            const clockY = 60;
-            const radius = 40;
-            
-            // Cercle de l'horloge
-            ctx.strokeStyle = '#000';
-            ctx.lineWidth = 3;
-            ctx.beginPath();
-            ctx.arc(clockX, clockY, radius, 0, Math.PI * 2);
-            ctx.fillStyle = '#FFF';
-            ctx.fill();
-            ctx.stroke();
-            
-            // Aiguille (rotation basée sur le temps restant)
-            const angle = (gameState.timeLeft / COUNTDOWN_TIME) * Math.PI * 2 - Math.PI / 2;
-            const endX = clockX + 30 * Math.cos(angle);
-            const endY = clockY + 30 * Math.sin(angle);
-            
-            ctx.strokeStyle = '#FF0000';
-            ctx.lineWidth = 3;
-            ctx.beginPath();
-            ctx.moveTo(clockX, clockY);
-            ctx.lineTo(endX, endY);
-            ctx.stroke();
-            
-            // Point central
-            ctx.fillStyle = '#000';
-            ctx.beginPath();
-            ctx.arc(clockX, clockY, 4, 0, Math.PI * 2);
-            ctx.fill();
-            
-            // Texte du temps
-            ctx.fillStyle = '#000';
-            ctx.font = 'bold 20px Arial';
-            ctx.textAlign = 'center';
-            ctx.fillText(Math.ceil(gameState.timeLeft) + 's', clockX, clockY + 60);
-        }
+        # Objets du jeu
+        self.player = None
+        self.door = None
         
-        // Fonction de rendu
-        function draw() {
-            // Effacer l'écran
-            ctx.fillStyle = '#8B9BB3';
-            ctx.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-            
-            // Dessiner les plateformes
-            for (let platform of gameState.platforms) {
-                platform.draw();
-            }
-            
-            // Dessiner la porte
-            gameState.door.draw();
-            
-            // Dessiner le joueur
-            gameState.player.draw();
-            
-            // Dessiner l'horloge
-            drawClock();
-            
-            // Messages de fin
-            if (gameState.gameOver) {
-                ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-                ctx.fillRect(SCREEN_WIDTH/2 - 200, SCREEN_HEIGHT/2 - 100, 400, 200);
-                
-                ctx.fillStyle = '#FF0000';
-                ctx.font = 'bold 40px Arial';
-                ctx.textAlign = 'center';
-                ctx.fillText('TEMPS ÉCOULÉ!', SCREEN_WIDTH/2, SCREEN_HEIGHT/2 - 20);
-                
-                ctx.fillStyle = '#FFF';
-                ctx.font = '20px Arial';
-                ctx.fillText('Appuyez sur R pour recommencer', SCREEN_WIDTH/2, SCREEN_HEIGHT/2 + 30);
-            }
-            
-            if (gameState.levelComplete) {
-                ctx.fillStyle = 'rgba(34, 139, 34, 0.9)';
-                ctx.fillRect(SCREEN_WIDTH/2 - 250, SCREEN_HEIGHT/2 - 100, 500, 200);
-                
-                ctx.fillStyle = '#FFFF00';
-                ctx.font = 'bold 40px Arial';
-                ctx.textAlign = 'center';
-                ctx.fillText('NIVEAU TERMINÉ!', SCREEN_WIDTH/2, SCREEN_HEIGHT/2 - 30);
-                
-                ctx.fillStyle = '#FFF';
-                ctx.font = '18px Arial';
-                ctx.fillText('Félicitations! Vous avez atteint la porte!', SCREEN_WIDTH/2, SCREEN_HEIGHT/2 + 10);
-                ctx.font = '16px Arial';
-                ctx.fillText('Appuyez sur R pour recommencer', SCREEN_WIDTH/2, SCREEN_HEIGHT/2 + 50);
-            }
-        }
+        # Moteur de physique
+        self.physics_engine = None
         
-        // Boucle de jeu
-        let lastTime = 0;
-        function gameLoop(currentTime) {
-            const deltaTime = (currentTime - lastTime) / 1000;
-            lastTime = currentTime;
-            
-            if (!gameState.gameOver && !gameState.levelComplete) {
-                // Mettre à jour le compte à rebours
-                gameState.timeLeft -= deltaTime;
-                
-                // Vérifier si le temps est écoulé
-                if (gameState.timeLeft <= 0) {
-                    gameState.timeLeft = 0;
-                    gameState.gameOver = true;
-                }
-                
-                // Mettre à jour le joueur
-                gameState.player.update();
-                
-                // Vérifier si le joueur touche la porte
-                if (gameState.door.checkCollision(gameState.player)) {
-                    gameState.levelComplete = true;
-                }
-                
-                // Vérifier si le joueur tombe
-                if (gameState.player.y > SCREEN_HEIGHT) {
-                    gameState.gameOver = true;
-                }
-            }
-            
-            // Dessiner
-            draw();
-            
-            // Continuer la boucle
-            requestAnimationFrame(gameLoop);
-        }
+        # Compte à rebours
+        self.time_left = COUNTDOWN_TIME
         
-        // Gestion des touches
-        document.addEventListener('keydown', (e) => {
-            if (e.code === 'KeyR') {
-                setupGame();
-                return;
-            }
-            
-            if (gameState.gameOver || gameState.levelComplete) return;
-            
-            if (e.code === 'ArrowLeft') {
-                gameState.keys.left = true;
-            }
-            if (e.code === 'ArrowRight') {
-                gameState.keys.right = true;
-            }
-            if (e.code === 'Space') {
-                e.preventDefault();
-                gameState.player.jump();
-            }
-        });
+        # État du jeu
+        self.game_over = False
+        self.level_complete = False
         
-        document.addEventListener('keyup', (e) => {
-            if (e.code === 'ArrowLeft') {
-                gameState.keys.left = false;
-            }
-            if (e.code === 'ArrowRight') {
-                gameState.keys.right = false;
-            }
-        });
+        # Couleur de fond
+        arcade.set_background_color(BACKGROUND_COLOR)
+    
+    def setup(self):
+        """Configuration initiale du jeu"""
         
-        // Démarrer le jeu
-        setupGame();
-        requestAnimationFrame(gameLoop);
-    </script>
-</body>
-</html>
+        # Initialiser les listes de sprites
+        self.player_list = arcade.SpriteList()
+        self.platform_list = arcade.SpriteList()
+        self.door_list = arcade.SpriteList()
+        
+        # === CRÉER LE JOUEUR ===
+        self.player = Player()
+        self.player_list.append(self.player)
+        
+        # === CRÉER LES PLATEFORMES ===
+        
+        # Sol principal
+        ground = Platform(SCREEN_WIDTH // 2, 25, SCREEN_WIDTH, 50)
+        self.platform_list.append(ground)
+        
+        # Plateforme de départ (bas gauche)
+        platform_start = Platform(150, 100, 150, 20)
+        self.platform_list.append(platform_start)
+        
+        # Rampe montante (chemin en escalier)
+        for i in range(5):
+            x = 250 + i * 80
+            y = 150 + i * 80
+            platform = Platform(x, y, 100, 20)
+            self.platform_list.append(platform)
+        
+        # Plateforme du milieu
+        platform_middle = Platform(650, 450, 120, 20)
+        self.platform_list.append(platform_middle)
+        
+        # Plateforme haute (sous la porte)
+        platform_top = Platform(850, 650, 150, 20)
+        self.platform_list.append(platform_top)
+        
+        # === CRÉER LA PORTE ===
+        self.door = Door(850, 710)
+        self.door_list.append(self.door)
+        
+        # === CRÉER LE MOTEUR DE PHYSIQUE ===
+        self.physics_engine = arcade.PhysicsEnginePlatformer(
+            self.player,
+            self.platform_list,
+            gravity_constant=GRAVITY
+        )
+        
+        # Réinitialiser les variables
+        self.time_left = COUNTDOWN_TIME
+        self.game_over = False
+        self.level_complete = False
+    
+    def on_draw(self):
+        """Dessiner tous les éléments du jeu"""
+        self.clear()
+        
+        # Dessiner les sprites
+        self.platform_list.draw()
+        self.door_list.draw()
+        self.player_list.draw()
+        
+        # === DESSINER L'HORLOGE (compte à rebours) ===
+        clock_x = 80
+        clock_y = SCREEN_HEIGHT - 60
+        clock_radius = 40
+        
+        # Cercle de l'horloge
+        arcade.draw_circle_outline(clock_x, clock_y, clock_radius, CLOCK_COLOR, 3)
+        arcade.draw_circle_filled(clock_x, clock_y, clock_radius - 2, arcade.color.WHITE)
+        
+        # Aiguille de l'horloge (rotation basée sur le temps restant)
+        angle = (self.time_left / COUNTDOWN_TIME) * 360
+        end_x = clock_x + 30 * math.cos(math.radians(angle - 90))
+        end_y = clock_y + 30 * math.sin(math.radians(angle - 90))
+        arcade.draw_line(clock_x, clock_y, end_x, end_y, arcade.color.RED, 3)
+        
+        # Point central de l'horloge
+        arcade.draw_circle_filled(clock_x, clock_y, 4, CLOCK_COLOR)
+        
+        # Afficher le temps restant en texte
+        time_text = f"{int(self.time_left)}s"
+        arcade.draw_text(
+            time_text, 
+            clock_x, 
+            clock_y - 55, 
+            CLOCK_COLOR, 
+            20, 
+            anchor_x="center", 
+            bold=True
+        )
+        
+        # === MESSAGES DE FIN DE JEU ===
+        
+        # Message de défaite (temps écoulé)
+        if self.game_over:
+            arcade.draw_rectangle_filled(
+                SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2,
+                400, 200, 
+                arcade.color.BLACK
+            )
+            arcade.draw_text(
+                "TEMPS ÉCOULÉ!", 
+                SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 30,
+                arcade.color.RED, 
+                40, 
+                anchor_x="center", 
+                bold=True
+            )
+            arcade.draw_text(
+                "Appuyez sur R pour recommencer", 
+                SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 20, 
+                arcade.color.WHITE, 
+                20, 
+                anchor_x="center"
+            )
+        
+        # Message de victoire (niveau terminé)
+        if self.level_complete:
+            arcade.draw_rectangle_filled(
+                SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2,
+                500, 200, 
+                arcade.color.DARK_GREEN
+            )
+            arcade.draw_text(
+                "NIVEAU TERMINÉ!", 
+                SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 30,
+                arcade.color.YELLOW, 
+                40, 
+                anchor_x="center", 
+                bold=True
+            )
+            arcade.draw_text(
+                "Félicitations! Vous avez atteint la porte!", 
+                SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 20, 
+                arcade.color.WHITE, 
+                18, 
+                anchor_x="center"
+            )
+            arcade.draw_text(
+                "Appuyez sur R pour recommencer", 
+                SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 50, 
+                arcade.color.WHITE, 
+                16, 
+                anchor_x="center"
+            )
+    
+    def on_update(self, delta_time):
+        """Mise à jour de la logique du jeu (appelée ~60 fois par seconde)"""
+        
+        # Ne pas mettre à jour si le jeu est terminé
+        if self.game_over or self.level_complete:
+            return
+        
+        # Mettre à jour le compte à rebours
+        self.time_left -= delta_time
+        
+        # Vérifier si le temps est écoulé
+        if self.time_left <= 0:
+            self.time_left = 0
+            self.game_over = True
+            return
+        
+        # Mettre à jour la physique (gravité, collisions)
+        self.physics_engine.update()
+        
+        # Vérifier si le joueur touche la porte
+        door_hit = arcade.check_for_collision_with_list(self.player, self.door_list)
+        if door_hit:
+            self.level_complete = True
+        
+        # Vérifier si le joueur tombe en dehors de l'écran
+        if self.player.center_y < 0:
+            self.game_over = True
+    
+    def on_key_press(self, key, modifiers):
+        """Gérer les touches pressées"""
+        
+        # Touche R : Recommencer le jeu
+        if key == arcade.key.R:
+            self.setup()
+            return
+        
+        # Ne pas permettre de jouer si le jeu est terminé
+        if self.game_over or self.level_complete:
+            return
+        
+        # Flèche gauche : Déplacer à gauche
+        if key == arcade.key.LEFT:
+            self.player.change_x = -PLAYER_MOVEMENT_SPEED
+        
+        # Flèche droite : Déplacer à droite
+        if key == arcade.key.RIGHT:
+            self.player.change_x = PLAYER_MOVEMENT_SPEED
+        
+        # Barre espace : Sauter
+        if key == arcade.key.SPACE:
+            # Vérifier si le joueur est sur une plateforme
+            if self.physics_engine.can_jump():
+                self.player.change_y = PLAYER_JUMP_SPEED
+    
+    def on_key_release(self, key, modifiers):
+        """Gérer les touches relâchées"""
+        
+        # Ne pas permettre de jouer si le jeu est terminé
+        if self.game_over or self.level_complete:
+            return
+        
+        # Arrêter le déplacement horizontal quand on relâche les flèches
+        if key == arcade.key.LEFT or key == arcade.key.RIGHT:
+            self.player.change_x = 0
+
+
+def main():
+    """Fonction principale pour lancer le jeu"""
+    window = arcade.Window(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
+    game_view = GameView()
+    game_view.setup()
+    window.show_view(game_view)
+    arcade.run()
+
+
+if __name__ == "__main__":
+    main()
