@@ -1,0 +1,54 @@
+troisième compte rendu ; création du premier code du jeu et test du premier niveau tempoquest 
+
+1 : codage du premier niveau 
+
+. en premier création d'un code arcade : import arcade 
+
+. deuxième temps mise en place de plateformes dans la map positionner de manière a les relier a la porte : 
+Classe Plateforme
+        class Platform {
+            constructor(x, y, width, height) {
+                this.x = x;
+                this.y = y;
+                this.width = width;
+                this.height = height;
+                this.color = '#4A4A4A';
+            }
+
+. troisième temps création de la porte pour un passage au niveau suivant la porte qui doit être accessible au joueur  :
+
+ Classe Porte
+        class Door {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.width = 60;
+                this.height = 80;
+                this.color = '#228B22';
+
+. de plus on a rajouter une horloge qui tourne avec un chronomètre de 30 seconde afficher :
+
+Dessiner l'horloge
+        function drawClock() {
+            const clockX = 80;
+            const clockY = 60;
+            const radius = 40;
+            
+
+. enfin on a mis une boucle au jeu pour vérifier le temps qui s'écoule :
+
+Boucle de jeu
+        let lastTime = 0;
+        function gameLoop(currentTime) {
+            const deltaTime = (currentTime - lastTime) / 1000;
+            lastTime = currentTime;
+            
+            if (!gameState.gameOver && !gameState.levelComplete) {
+                // Mettre à jour le compte à rebours
+                gameState.timeLeft -= deltaTime;
+                
+                // Vérifier si le temps est écoulé
+                if (gameState.timeLeft <= 0) {
+                    gameState.timeLeft = 0;
+                    gameState.gameOver = true;
+
