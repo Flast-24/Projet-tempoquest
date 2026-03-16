@@ -1,21 +1,27 @@
+import json
 import arcade
+from pathlib import Path
 
-TILE_SIZE = 44
-
-def load_level(level_num):
-    """
-    Charge un niveau depuis un fichier .txt.
-
-    Args:
-        level_num (int): Le numéro du niveau à charger.
-
-    Returns:
-        list: Une liste de chaînes de caractères représentant le niveau.
-              Retourne None si le fichier n'est pas trouvé.
-    """
-    filename = f"levels/level{level_num}.txt"
-    try:
-        with open(filename, 'r') as f:
-            return f.read().splitlines()
-    except FileNotFoundError:
+def load_level(level_name):
+    level_file = Path(f"levels/{level_name}.json")
+    if not level_file.exists():
         return None
+    with open(level_file, "r") as f:
+        try:
+            return json.load(f)
+        except json.JSONDecodeError:
+            # The file is empty or malformed
+            return None
+
+def create_walls_from_data(level_data):
+    walls = arcade.SpriteList()
+    for wall_data in level_data["walls"]:
+        wall = arcade.SpriteSolidColor(
+            int(wall_data["size"][0]),
+            int(wall_data["size"][1]),
+            arcade.color.DARK_GREEN
+        )
+        wall.center_x = wall_data["position"][0]
+        wall.center_y = wall_data["position"][1]
+        walls.append(wall)
+    return walls
