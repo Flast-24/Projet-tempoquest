@@ -20,6 +20,7 @@ class LevelEditorView(arcade.View):
         self.start_list = arcade.SpriteList()
         self.end_list = arcade.SpriteList()
         self.save_message_timer = 0
+        self.max_ghosts = 3
 
     def on_show_view(self):
         arcade.set_background_color(arcade.color.BLACK)
@@ -41,6 +42,7 @@ class LevelEditorView(arcade.View):
         # Load existing level data if it exists
         level_data = level_manager.load_level(self.level_name)
         if level_data:
+            self.max_ghosts = level_data.get("max_ghosts", 3)
             # Load walls
             for wall_data in level_data["walls"]:
                 wall = _create_sprite(50, arcade.color.DARK_GREEN)
@@ -77,6 +79,7 @@ class LevelEditorView(arcade.View):
         arcade.draw_text("E: Placer l'arrivée", 10, SCREEN_H - 150, arcade.color.WHITE, 16)
         arcade.draw_text("Entrée: Sauvegarder", 10, SCREEN_H - 180, arcade.color.WHITE, 16)
         arcade.draw_text("Échap: Quitter sans sauvegarder", 10, SCREEN_H - 210, arcade.color.WHITE, 16)
+        arcade.draw_text(f"HAUT/BAS: Changer nombre max de fantômes ({self.max_ghosts})", 10, SCREEN_H - 240, arcade.color.WHITE, 16)
 
         if self.save_message_timer > 0:
             arcade.draw_text("Sauvegardé !", SCREEN_W / 2, SCREEN_H / 2, 
@@ -123,11 +126,16 @@ class LevelEditorView(arcade.View):
             self.save_level()
         elif key == arcade.key.ESCAPE:
             self.window.show_view(self.menu_view)
+        elif key == arcade.key.UP:
+            self.max_ghosts += 1
+        elif key == arcade.key.DOWN:
+            self.max_ghosts = max(0, self.max_ghosts - 1)
     
     def save_level(self):
         level_data = {
             "start": [self.start_list[0].center_x, self.start_list[0].center_y] if self.start_list else [100, 100],
             "end": [self.end_list[0].center_x, self.end_list[0].center_y] if self.end_list else [700, 500],
+            "max_ghosts": self.max_ghosts,
             "walls": []
         }
         for wall in self.walls:

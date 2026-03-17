@@ -23,6 +23,8 @@ class GameView(arcade.View):
         self.level_data = None
         self.win = False
         self.level_found = True
+        self.max_ghosts = 0
+        self.ghosts_left = 0
 
     def on_show_view(self):
         arcade.set_background_color(arcade.color.BLACK)
@@ -34,6 +36,9 @@ class GameView(arcade.View):
         if not self.level_data:
             self.level_found = False
             return
+
+        self.max_ghosts = self.level_data.get("max_ghosts", 3)
+        self.ghosts_left = self.max_ghosts
 
         self.player_list = arcade.SpriteList()
         self.walls = level_manager.create_walls_from_data(self.level_data)
@@ -66,7 +71,7 @@ class GameView(arcade.View):
         self.goal_list.draw()
         self.player_list.draw()
         
-        arcade.draw_text("R: Créer fantôme", 10, SCREEN_H - 20, arcade.color.WHITE)
+        arcade.draw_text(f"R: Créer fantôme ({self.ghosts_left}/{self.max_ghosts} restants)", 10, SCREEN_H - 20, arcade.color.WHITE)
         arcade.draw_text("T: Recommencer", 10, SCREEN_H - 40, arcade.color.WHITE)
         arcade.draw_text("Échap: Quitter", 10, SCREEN_H - 60, arcade.color.WHITE)
         
@@ -108,13 +113,15 @@ class GameView(arcade.View):
             self.player.change_x = MOVE_SPEED
             
         elif key == arcade.key.R:
-            ghost = Ghost(self.player.center_x, self.player.center_y)
-            self.ghosts.append(ghost)
-            
-            self.player.center_x = self.level_data["start"][0]
-            self.player.center_y = self.level_data["start"][1]
-            self.player.change_x = 0
-            self.player.change_y = 0
+            if self.ghosts_left > 0:
+                ghost = Ghost(self.player.center_x, self.player.center_y)
+                self.ghosts.append(ghost)
+                self.ghosts_left -= 1
+                
+                self.player.center_x = self.level_data["start"][0]
+                self.player.center_y = self.level_data["start"][1]
+                self.player.change_x = 0
+                self.player.change_y = 0
 
     def on_key_release(self, key, modifiers):
         if not self.level_found:
