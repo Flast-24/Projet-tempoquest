@@ -144,7 +144,7 @@ class LevelEditorView(arcade.View):
                 "size": [wall.width, wall.height]
             })
         
-        filepath = Path(f"levels/{self.level_name}.json")
+        filepath = Path(f"data/levels/{self.level_name}.json")
         with open(filepath, "w") as f:
             json.dump(level_data, f, indent=4)
         self.save_message_timer = 3.0

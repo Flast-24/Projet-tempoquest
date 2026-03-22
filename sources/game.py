@@ -42,7 +42,7 @@ class GameView(arcade.View):
 
         self.player_list = arcade.SpriteList()
         self.walls = arcade.SpriteList(use_spatial_hash=True)
-        texture_path = "assets/images/Block_Texture.png"
+        texture_path = "data/assets/images/Block_Texture.png"
         texture_size = 50
 
         for wall_data in self.level_data["walls"]:

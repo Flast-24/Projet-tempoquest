@@ -3,7 +3,7 @@ import arcade
 from pathlib import Path
 
 def load_level(level_name):
-    level_file = Path(f"levels/{level_name}.json")
+    level_file = Path(f"data/levels/{level_name}.json")
     if not level_file.exists():
         return None
     with open(level_file, "r") as f:

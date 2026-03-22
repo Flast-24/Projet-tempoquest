@@ -1,50 +1,52 @@
-# 🚀 Nom de votre Projet
-- Projet tempoquest
+# 🚀 TempoQuest
+
 ## 📝 Description
 
-Une description claire et concise (5-10 lignes) de votre projet.
-un jeux de parcour et de reflexion en rapport avec le temps ou notre personnage peut controler le temps.
+**TempoQuest** est un jeu de plateforme et de réflexion où le temps est votre meilleur allié. Le concept central repose sur une mécanique unique : la duplication temporelle.
 
-- Quel est l'objectif ?
-- Pourquoi avez-vous choisi ce sujet ?
-- En quoi répond-il aux critères d'originalité ou d'utilité des Trophées NSI ?
+L'objectif est de traverser des niveaux complexes en créant des "fantômes" de votre personnage. À chaque duplication, votre personnage principal retourne au point de départ, mais le fantôme reste sur place, vous servant de plateforme solide. En grimpant sur vos propres doubles temporels, vous pouvez atteindre des hauteurs et des endroits autrement inaccessibles.
+
+Ce projet a été imaginé pour explorer une mécanique de jeu originale, en partant d'une simple idée de "platformer" pour arriver à un concept qui pousse à la réflexion et à la stratégie.
 
 ## 👥 L'Équipe
 
-- Diennet Teddy (@teddyd-hub) : Responsable du passage des niveaux, des mécaniques des niveaux il s'occupte des compte rendu de séance.
-- Benzaoi Ryad (@Flast-24) : Responsable du personnages et  de la boucle temporelle il est le chef de projet.
-- Amar hidoux Raphaël (@hophopraph-coder) : Responsable de l'interface, des sprites et des sons il s'occupe du calendrier.
+- **Diennet Teddy** (@teddyd-hub) : Mécaniques de jeu et conception des niveaux, gestion des comptes rendus.
+- **Benzaoi Ryad** (@Flast-24) : Développement du personnage et de la mécanique de duplication, chef de projet.
+- **Amar hidoux Raphaël** (@hophopraph-coder) : Interface utilisateur, conception des sprites et des sons, gestion du calendrier.
 
-## 🛠️ Aspects Techniques (Spécificités NSI)
+*Note : Le projet a été développé en collaboration constante, avec une répartition flexible des tâches.*
 
-Cette section est cruciale pour le jury. Expliquez comment vous avez utilisé le programme de NSI :
+## 🛠️ Aspects Techniques
 
-- **Langages & Libs :** Python (Pygame, SQLite, etc.)
-- **Structures de données :** Utilisation de dictionnaires pour gérer l'inventaire, de listes de listes pour la grille du jeu, etc.
-- **Concepts mobilisés :** - Programmation Orientée Objet (ex: classe `Player` et `Enemy`).
-  - Récursivité (ex: pour l'algorithme de parcours de labyrinthe).
-  - Gestion de fichiers (ex: sauvegarde des scores en JSON).
+Ce projet met en œuvre plusieurs concepts du programme de NSI :
+
+- **Langages & Bibliothèques :** Python avec la bibliothèque **Arcade**, utilisée pour la première fois par l'équipe.
+- **Structures de données :** Utilisation de listes pour gérer les murs, les fantômes et les objets. Les niveaux sont stockés et chargés en **JSON**, ce qui permet une grande flexibilité.
+- **Programmation Orientée Objet :** Le code est structuré autour de classes comme `Player`, `Ghost`, `GameView`, et `LevelEditorView`, ce qui permet de bien séparer les responsabilités.
+- **Gestion de fichiers :** Le système de création, de modification, de renommage et de suppression de niveaux repose entièrement sur la manipulation de fichiers JSON.
 
 ## 🚀 Installation et Utilisation
 
-Expliquez comment tester votre projet :
-
-1. **Prérequis :** (ex: Python 3.10+)
-2. **Installation des dépendances :** `pip install -r requirements.txt`
-3. **Lancement :** `python main.py`
-
-## 📊 État d'avancement (Journal de bord)
-
-- [x] Jalon 1 : Cahier des charges et structure de base.
-- [x] Jalon 2 : Logique principale fonctionnelle.
-- [ ] Jalon 3 : Interface graphique finale.
-- [ ] Jalon 4 : Vidéo de démonstration et tests unitaires.
+1.  **Prérequis :** Assurez-vous d'avoir Python 3.10+ installé.
+2.  **Installation :** Créez un environnement virtuel et installez les dépendances :
+    ```sh
+    python -m venv .venv
+    source .venv/bin/activate  # Sur Windows: .venv\Scripts\activate
+    pip install -r requirements.txt
+    ```
+3.  **Lancement :** Pour démarrer le jeu, exécutez la commande suivante depuis la racine du projet :
+    ```sh
+    python sources/main.py
+    ```
 
 ## 📸 Captures d'écran
->
-> *Ajoutez ici une ou deux images de votre projet en action.*
+
+> **À FAIRE :** N'oubliez pas de remplacer l'image ci-dessous par une capture d'écran de votre jeu !
 ![Aperçu du projet](lien_vers_image.png)
 
 ## 📜 Licence
 
-Le code du projet est placé sous licence libre GPL v3+ et le texte sous licence Creative Commons CC By-Sa.
+Le code source de ce projet est placé sous la **Licence Publique Générale GNU v3.0 (GPLv3)**.
+Le texte de la documentation (`.md`, `.txt`) est placé sous licence **Creative Commons CC BY-SA**.
+
+Vous trouverez le texte complet de la licence GPLv3 dans le fichier `Licence.txt`.

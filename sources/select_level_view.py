@@ -15,9 +15,8 @@ class SelectLevelView(arcade.View):
         self.scan_levels()
 
     def scan_levels(self):
-        self.levels = ["level1"]
-        level_files = Path("levels").glob("*.json")
-        custom_levels = sorted([f.stem for f in level_files if f.stem not in ["level1", "level_editor"]])
+        level_files = Path("data/levels").glob("*.json")
+        custom_levels = sorted([f.stem for f in level_files if f.stem not in ["level_editor"]])
         self.levels.extend(custom_levels)
 
     def on_draw(self):

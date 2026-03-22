@@ -53,7 +53,7 @@ class TextInputView(arcade.View):
         # Append the character to the text
         if len(self.text) < 20: # Arbitrary limit
             # a-z, 0-9, underscore and hyphen allowed
-            if re.match("^[a-zA-Z0-9_-]*$", text):
+            if re.match("^[a-zA-Z0-9_ -]*$", text):
                 self.text += text
     
     def validate_and_start(self):
@@ -63,7 +63,7 @@ class TextInputView(arcade.View):
             return
         
         # Simple sanitization
-        level_name = re.sub(r'[^a-zA-Z0-9_-]', '', level_name).lower()
+        level_name = re.sub(r'[^a-zA-Z0-9_ -]', '', level_name).lower()
 
         if level_name in ["level1", "level_editor"]:
             self.error_message = "Ce nom de niveau est réservé."
