@@ -41,7 +41,28 @@ class GameView(arcade.View):
         self.ghosts_left = self.max_ghosts
 
         self.player_list = arcade.SpriteList()
-        self.walls = level_manager.create_walls_from_data(self.level_data)
+        self.walls = arcade.SpriteList(use_spatial_hash=True)
+        texture_path = "assets/images/Block_Texture.png"
+        texture_size = 50
+
+        for wall_data in self.level_data["walls"]:
+            wall_width = int(wall_data["size"][0])
+            wall_height = int(wall_data["size"][1])
+            center_x = wall_data["position"][0]
+            center_y = wall_data["position"][1]
+
+            start_x = center_x - wall_width / 2
+            start_y = center_y - wall_height / 2
+
+            num_tiles_x = wall_width // texture_size
+            num_tiles_y = wall_height // texture_size
+
+            for i in range(num_tiles_x):
+                for j in range(num_tiles_y):
+                    wall = arcade.Sprite(texture_path)
+                    wall.center_x = start_x + (i * texture_size) + (texture_size / 2)
+                    wall.center_y = start_y + (j * texture_size) + (texture_size / 2)
+                    self.walls.append(wall)
 
         self.player = Player()
         self.player.center_x = self.level_data["start"][0]
@@ -85,6 +106,11 @@ class GameView(arcade.View):
             return
         if not self.win:
             self.physics.update()
+
+            # Check if player has fallen off the screen
+            if self.player.center_y < 0:
+                self.setup()
+                return
 
             if arcade.check_for_collision_with_list(self.player, self.goal_list):
                 self.win = True

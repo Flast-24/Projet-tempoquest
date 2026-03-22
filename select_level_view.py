@@ -22,16 +22,16 @@ class SelectLevelView(arcade.View):
 
     def on_draw(self):
         self.clear()
-        arcade.draw_text("Sélectionnez un niveau", SCREEN_W / 2, SCREEN_H - 50,
-                         arcade.color.WHITE, font_size=30, anchor_x="center")
+        arcade.draw_text("Sélectionnez un niveau", SCREEN_W / 2, SCREEN_H - 100,
+                         arcade.color.WHITE, font_size=40, anchor_x="center")
 
         for i, level_name in enumerate(self.levels):
-            y = SCREEN_H - 150 - (i * 50)
+            y = SCREEN_H - 200 - (i * 60)
             color = arcade.color.YELLOW if i == self.selected_index else arcade.color.WHITE
-            arcade.draw_text(level_name, SCREEN_W / 2, y, color, font_size=24, anchor_x="center")
+            arcade.draw_text(level_name, SCREEN_W / 2, y, color, font_size=30, anchor_x="center")
         
         arcade.draw_text("Utilisez HAUT/BAS pour naviguer, ENTRÉE pour choisir, ÉCHAP pour revenir.",
-                         SCREEN_W / 2, 50, arcade.color.GRAY, font_size=16, anchor_x="center")
+                         SCREEN_W / 2, 100, arcade.color.GRAY, font_size=20, anchor_x="center")
 
     def on_key_press(self, key, modifiers):
         if key == arcade.key.UP:

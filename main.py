@@ -3,6 +3,37 @@ from constants import *
 from select_level_view import SelectLevelView
 from editor_menu_view import EditorMenuView
 
+class MyWindow(arcade.Window):
+    def __init__(self, width, height, title, fullscreen, resizable):
+        super().__init__(width, height, title, fullscreen=fullscreen, resizable=resizable)
+        self.game_width = width
+        self.game_height = height
+        self.set_vsync(True)
+        # Force an initial resize event
+        self.on_resize(self.width, self.height)
+
+    def on_resize(self, width: int, height: int):
+        super().on_resize(width, height)
+        
+        game_aspect_ratio = self.game_width / self.game_height
+        window_aspect_ratio = width / height
+        
+        if window_aspect_ratio > game_aspect_ratio:
+            # Window is wider
+            view_width = int(game_aspect_ratio * height)
+            view_height = height
+            x_offset = (width - view_width) // 2
+            y_offset = 0
+        else:
+            # Window is taller
+            view_width = width
+            view_height = int(width / game_aspect_ratio)
+            x_offset = 0
+            y_offset = (height - view_height) // 2
+            
+        self.ctx.viewport = (x_offset, y_offset, view_width, view_height)
+        self.ctx.projection_2d = 0, self.game_width, 0, self.game_height
+
 class MenuView(arcade.View):
     def on_show_view(self):
         arcade.set_background_color(arcade.color.WHITE)
@@ -25,7 +56,7 @@ class MenuView(arcade.View):
             self.window.show_view(editor_menu)
 
 def main():
-    window = arcade.Window(SCREEN_W, SCREEN_H, "Jeu Temporel")
+    window = MyWindow(SCREEN_W, SCREEN_H, "Jeu Temporel", fullscreen=True, resizable=True)
     menu_view = MenuView()
     window.show_view(menu_view)
     arcade.run()

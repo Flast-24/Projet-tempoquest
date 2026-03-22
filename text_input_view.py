@@ -15,31 +15,31 @@ class TextInputView(arcade.View):
 
     def on_draw(self):
         self.clear()
-        arcade.draw_text("Créer un nouveau niveau", SCREEN_W / 2, SCREEN_H - 50,
-                         arcade.color.WHITE, font_size=30, anchor_x="center")
+        arcade.draw_text("Créer un nouveau niveau", SCREEN_W / 2, SCREEN_H - 100,
+                         arcade.color.WHITE, font_size=40, anchor_x="center")
         
-        arcade.draw_text("Nom du niveau:", SCREEN_W / 2, SCREEN_H / 2 + 50,
-                         arcade.color.WHITE, font_size=20, anchor_x="center")
+        arcade.draw_text("Nom du niveau:", SCREEN_W / 2, SCREEN_H / 2 + 100,
+                         arcade.color.WHITE, font_size=30, anchor_x="center")
 
         # Display the text being typed
         arcade.draw_text(self.text, SCREEN_W / 2, SCREEN_H / 2,
-                         arcade.color.WHITE, font_size=24, anchor_x="center")
+                         arcade.color.WHITE, font_size=35, anchor_x="center")
         
         # Display blinking cursor
         if len(self.text) < 20: # Limit cursor blink to max length
             if int(arcade.get_window().time) % 2 == 0:
-                text_width = len(self.text) * 14 # Approximate width
+                text_width = len(self.text) * 20 # Approximate width
                 arcade.draw_line(SCREEN_W/2 + text_width/2 + 5, SCREEN_H/2 - 5,
                                  SCREEN_W/2 + text_width/2 + 5, SCREEN_H/2 + 25,
                                  arcade.color.WHITE, 2)
 
 
         if self.error_message:
-            arcade.draw_text(self.error_message, SCREEN_W / 2, SCREEN_H / 2 - 50,
-                             arcade.color.RED, font_size=16, anchor_x="center")
+            arcade.draw_text(self.error_message, SCREEN_W / 2, SCREEN_H / 2 - 100,
+                             arcade.color.RED, font_size=25, anchor_x="center")
 
         arcade.draw_text("Appuyez sur ENTRÉE pour valider, ÉCHAP pour annuler.",
-                         SCREEN_W / 2, 50, arcade.color.GRAY, font_size=16, anchor_x="center")
+                         SCREEN_W / 2, 100, arcade.color.GRAY, font_size=20, anchor_x="center")
 
     def on_key_press(self, key, modifiers):
         if key == arcade.key.ENTER:
