@@ -88,7 +88,7 @@ class MenuView(arcade.View):
             self.window.close()
 
 def main():
-    window = MyWindow(SCREEN_W, SCREEN_H, "Jeu Temporel", fullscreen=False, resizable=True)
+    window = MyWindow(SCREEN_W, SCREEN_H, "TempoQuest", fullscreen=False, resizable=True)
     menu_view = MenuView()
     window.show_view(menu_view)
     arcade.run()
