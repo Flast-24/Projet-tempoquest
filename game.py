@@ -98,7 +98,7 @@ class GameView(arcade.View):
         
         if self.win:
             arcade.draw_text("Vous avez gagné!", SCREEN_W / 2, SCREEN_H / 2, arcade.color.WHITE, font_size=50, anchor_x="center")
-            arcade.draw_text("Appuyez sur Entrée pour recommencer.", SCREEN_W / 2, SCREEN_H / 2 - 50, arcade.color.WHITE, font_size=20, anchor_x="center")
+            arcade.draw_text("Appuyez sur Entrée pour recommencer ou Échap pour quitter.", SCREEN_W / 2, SCREEN_H / 2 - 50, arcade.color.WHITE, font_size=20, anchor_x="center")
 
 
     def on_update(self, delta_time):
@@ -124,6 +124,8 @@ class GameView(arcade.View):
         if self.win:
             if key == arcade.key.ENTER:
                 self.setup()
+            elif key == arcade.key.ESCAPE:
+                self.window.show_view(self.menu_view)
             return
 
         if key == arcade.key.ESCAPE:

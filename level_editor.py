@@ -14,7 +14,7 @@ class LevelEditorView(arcade.View):
         super().__init__()
         self.menu_view = menu_view
         self.level_name = level_name
-        self.grid = None
+        self.grid = arcade.SpriteList()
         self.cursor_list = arcade.SpriteList()
         self.walls = arcade.SpriteList()
         self.start_list = arcade.SpriteList()
@@ -24,17 +24,17 @@ class LevelEditorView(arcade.View):
 
     def on_show_view(self):
         arcade.set_background_color(arcade.color.BLACK)
-
-    def setup(self):
+        
         # Grid
-        self.grid = arcade.SpriteList()
-        for x in range(0, SCREEN_W, 50):
-            for y in range(0, SCREEN_H, 50):
+        self.grid.clear()
+        for x in range(0, self.window.width, 50):
+            for y in range(0, self.window.height, 50):
                 sprite = _create_sprite(50, arcade.color.GRAY, alpha=100)
                 sprite.center_x = x + 25
                 sprite.center_y = y + 25
                 self.grid.append(sprite)
-        
+
+    def setup(self):
         # Cursor
         cursor = _create_sprite(50, arcade.color.WHITE, alpha=100)
         self.cursor_list.append(cursor)
@@ -72,17 +72,17 @@ class LevelEditorView(arcade.View):
         self.end_list.draw()
         self.cursor_list.draw()
         
-        arcade.draw_text(f"Éditeur de niveau: {self.level_name}", 10, SCREEN_H - 30, arcade.color.WHITE, 20)
-        arcade.draw_text("Cliquez pour placer des murs", 10, SCREEN_H - 60, arcade.color.WHITE, 16)
-        arcade.draw_text("Clique-droit pour enlever un mur", 10, SCREEN_H - 90, arcade.color.WHITE, 16)
-        arcade.draw_text("S: Placer le départ", 10, SCREEN_H - 120, arcade.color.WHITE, 16)
-        arcade.draw_text("E: Placer l'arrivée", 10, SCREEN_H - 150, arcade.color.WHITE, 16)
-        arcade.draw_text("Entrée: Sauvegarder", 10, SCREEN_H - 180, arcade.color.WHITE, 16)
-        arcade.draw_text("Échap: Quitter sans sauvegarder", 10, SCREEN_H - 210, arcade.color.WHITE, 16)
-        arcade.draw_text(f"HAUT/BAS: Changer nombre max de fantômes ({self.max_ghosts})", 10, SCREEN_H - 240, arcade.color.WHITE, 16)
+        arcade.draw_text(f"Éditeur de niveau: {self.level_name}", 10, self.window.height - 30, arcade.color.WHITE, 20)
+        arcade.draw_text("Cliquez pour placer des murs", 10, self.window.height - 60, arcade.color.WHITE, 16)
+        arcade.draw_text("Clique-droit pour enlever un mur", 10, self.window.height - 90, arcade.color.WHITE, 16)
+        arcade.draw_text("S: Placer le départ", 10, self.window.height - 120, arcade.color.WHITE, 16)
+        arcade.draw_text("E: Placer l'arrivée", 10, self.window.height - 150, arcade.color.WHITE, 16)
+        arcade.draw_text("Entrée: Sauvegarder", 10, self.window.height - 180, arcade.color.WHITE, 16)
+        arcade.draw_text("Échap: Quitter sans sauvegarder", 10, self.window.height - 210, arcade.color.WHITE, 16)
+        arcade.draw_text(f"HAUT/BAS: Changer nombre max de fantômes ({self.max_ghosts})", 10, self.window.height - 240, arcade.color.WHITE, 16)
 
         if self.save_message_timer > 0:
-            arcade.draw_text("Sauvegardé !", SCREEN_W / 2, SCREEN_H / 2, 
+            arcade.draw_text("Sauvegardé !", self.window.width / 2, self.window.height / 2, 
                              arcade.color.GREEN, 40, anchor_x="center")
 
     def on_mouse_motion(self, x, y, dx, dy):
