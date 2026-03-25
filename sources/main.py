@@ -41,34 +41,34 @@ class MenuView(arcade.View):
         self.help_visible = False
 
     def on_show_view(self):
-        arcade.set_background_color(arcade.color.WHITE)
+        arcade.set_background_color(arcade.color.BLACK)
 
     def on_draw(self):
         self.clear()
         if self.help_visible:
             arcade.draw_text("Aide", SCREEN_W / 2, SCREEN_H - 100,
-                             arcade.color.BLACK, font_size=50, anchor_x="center")
+                             arcade.color.WHITE, font_size=50, anchor_x="center")
             arcade.draw_text("F: Plein écran", SCREEN_W / 2, SCREEN_H / 2 + 100,
-                             arcade.color.BLACK, font_size=20, anchor_x="center")
+                             arcade.color.WHITE, font_size=20, anchor_x="center")
             arcade.draw_text("Flèches directionnelles: Déplacer le personnage", SCREEN_W / 2, SCREEN_H / 2 + 50,
-                             arcade.color.BLACK, font_size=20, anchor_x="center")
+                             arcade.color.WHITE, font_size=20, anchor_x="center")
             arcade.draw_text("T: Recommencer le niveau", SCREEN_W / 2, SCREEN_H / 2,
-                             arcade.color.BLACK, font_size=20, anchor_x="center")
+                             arcade.color.WHITE, font_size=20, anchor_x="center")
             arcade.draw_text("R: Recréer un personnage", SCREEN_W / 2, SCREEN_H / 2 - 50,
-                             arcade.color.BLACK, font_size=20, anchor_x="center")
+                             arcade.color.WHITE, font_size=20, anchor_x="center")
             arcade.draw_text("Appuyez sur A pour revenir au menu principal", SCREEN_W / 2, 100,
-                             arcade.color.GRAY, font_size=20, anchor_x="center")
+                             arcade.color.LIGHT_GRAY, font_size=20, anchor_x="center")
         else:
             arcade.draw_text("Menu Principal", SCREEN_W / 2, SCREEN_H / 2,
-                             arcade.color.BLACK, font_size=50, anchor_x="center")
+                             arcade.color.WHITE, font_size=50, anchor_x="center")
             arcade.draw_text("Appuyez sur J pour Jouer", SCREEN_W / 2, SCREEN_H / 2 - 75,
-                             arcade.color.GRAY, font_size=20, anchor_x="center")
+                             arcade.color.LIGHT_GRAY, font_size=20, anchor_x="center")
             arcade.draw_text("Appuyez sur E pour l'Éditeur de niveaux", SCREEN_W / 2, SCREEN_H / 2 - 125,
-                             arcade.color.GRAY, font_size=20, anchor_x="center")
+                             arcade.color.LIGHT_GRAY, font_size=20, anchor_x="center")
             arcade.draw_text("Appuyez sur A pour afficher l'aide", SCREEN_W / 2, SCREEN_H / 2 - 175,
-                             arcade.color.GRAY, font_size=20, anchor_x="center")
+                             arcade.color.LIGHT_GRAY, font_size=20, anchor_x="center")
             arcade.draw_text("Appuyez sur Q pour Quitter", SCREEN_W / 2, SCREEN_H / 2 - 225,
-                             arcade.color.GRAY, font_size=20, anchor_x="center")
+                             arcade.color.LIGHT_GRAY, font_size=20, anchor_x="center")
 
     def on_key_press(self, key, modifiers):
         if key == arcade.key.J:
@@ -85,7 +85,7 @@ class MenuView(arcade.View):
             self.window.close()
 
 def main():
-    window = MyWindow(SCREEN_W, SCREEN_H, "TempoQuest", fullscreen=False, resizable=True)
+    window = MyWindow(SCREEN_W, SCREEN_H, "TempoQuest", fullscreen=True, resizable=True)
     menu_view = MenuView()
     window.show_view(menu_view)
     arcade.run()

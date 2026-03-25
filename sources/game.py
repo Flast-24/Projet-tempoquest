@@ -4,10 +4,6 @@ from player import Player
 from ghost import Ghost
 import level_manager
 
-def _create_sprite(size, color, alpha=255):
-    texture = arcade.make_soft_square_texture(size, color, outer_alpha=alpha)
-    sprite = arcade.Sprite(texture)
-    return sprite
 
 class GameView(arcade.View):
     def __init__(self, level_name, menu_view):
@@ -70,7 +66,7 @@ class GameView(arcade.View):
         self.player_list.append(self.player)
         
         self.goal_list = arcade.SpriteList()
-        goal = _create_sprite(50, arcade.color.GOLD)
+        goal = arcade.Sprite("data/assets/images/Sablier-50x50.png")
         goal.center_x = self.level_data["end"][0]
         goal.center_y = self.level_data["end"][1]
         self.goal_list.append(goal)
