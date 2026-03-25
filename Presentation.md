@@ -20,7 +20,7 @@
 - **Rôle de chacun et chacune :** Le projet a été développé dans un esprit de collaboration où chaque membre a touché à différents aspects du développement. Cependant, pour structurer le travail, des responsabilités principales ont été esquissées :
     - **Diennet Teddy :** S'est concentré sur la conception des niveaux et les mécaniques de jeu qui y sont associées, tout en assurant le suivi régulier du projet via les comptes rendus.
     - **Benzaoui Ryad :** A pris en charge le développement du personnage principal et de la mécanique de duplication temporelle, qui est au cœur du jeu. Il a également assuré la coordination générale en tant que chef de projet.
-    - **Amar hidoux Raphaël :** A géré toute la partie visuelle et sonore : création des sprites, design de l'interface utilisateur et gestion du calendrier de production.
+    - **Amar hidoux Raphaël :** A géré toute la partie visuelle : création des sprites, design de l'interface utilisateur et gestion du calendrier de production.
 
 - **Répartition des tâches et temps passé :** L'équipe a fonctionné de manière très collaborative, prenant les décisions de conception ensemble. Le développement s'est étalé sur plusieurs semaines, avec une utilisation de GitHub pour la gestion du code source.
 

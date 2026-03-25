@@ -23,14 +23,12 @@ class RenameLevelView(arcade.View):
         arcade.draw_text(f"Nouveau nom pour '{self.old_name}':", SCREEN_W / 2, SCREEN_H / 2 + 100,
                          arcade.color.WHITE, font_size=30, anchor_x="center")
 
-        # Display the text being typed
         arcade.draw_text(self.text, SCREEN_W / 2, SCREEN_H / 2,
                          arcade.color.WHITE, font_size=35, anchor_x="center")
         
-        # Display blinking cursor
-        if len(self.text) < 20: # Limit cursor blink to max length
+        if len(self.text) < 20:
             if int(arcade.get_window().time) % 2 == 0:
-                text_width = len(self.text) * 20 # Approximate width
+                text_width = len(self.text) * 20
                 arcade.draw_line(SCREEN_W/2 + text_width/2 + 5, SCREEN_H/2 - 5,
                                  SCREEN_W/2 + text_width/2 + 5, SCREEN_H/2 + 25,
                                  arcade.color.WHITE, 2)
@@ -52,9 +50,7 @@ class RenameLevelView(arcade.View):
             self.text = self.text[:-1]
 
     def on_text(self, text):
-        # Append the character to the text
-        if len(self.text) < 20: # Arbitrary limit
-            # a-z, 0-9, underscore, hyphen and space allowed
+        if len(self.text) < 20:
             if re.match("^[a-zA-Z0-9_ -]*$", text):
                 self.text += text
     
@@ -64,7 +60,6 @@ class RenameLevelView(arcade.View):
             self.error_message = "Le nom ne peut pas être vide."
             return
         
-        # Simple sanitization
         new_name = re.sub(r'[^a-zA-Z0-9_ -]', '', new_name).lower()
 
         if new_name in ["level1", "level_editor"]:
@@ -78,16 +73,13 @@ class RenameLevelView(arcade.View):
             self.error_message = f"Le niveau '{new_name}' existe déjà."
             return
 
-        # Rename the file
         try:
             old_path.rename(new_path)
         except OSError as e:
             self.error_message = f"Erreur lors du renommage: {e}"
             return
 
-        # All checks passed, clear error and proceed
         self.error_message = ""
         
-        # Go back to the selection view and refresh it
         self.select_level_view.scan_levels()
         self.window.show_view(self.select_level_view)

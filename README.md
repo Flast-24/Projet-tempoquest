@@ -11,7 +11,7 @@ Ce projet a été imaginé pour explorer une mécanique de jeu originale, en par
 ## 👥 L'Équipe
 
 - **Diennet Teddy** (@teddyd-hub) : Mécaniques de jeu et conception des niveaux, gestion des comptes rendus.
-- **Benzaoi Ryad** (@Flast-24) : Développement du personnage et de la mécanique de duplication, chef de projet.
+- **Benzaoui Ryad** (@Flast-24) : Développement du personnage et de la mécanique de duplication, chef de projet.
 - **Amar hidoux Raphaël** (@hophopraph-coder) : Interface utilisateur, conception des sprites et des sons, gestion du calendrier.
 
 *Note : Le projet a été développé en collaboration constante, avec une répartition flexible des tâches.*

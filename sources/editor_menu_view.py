@@ -33,11 +33,9 @@ class EditorMenuView(arcade.View):
             self.selected_index = (self.selected_index + 1) % len(self.options)
         elif key == arcade.key.ENTER:
             if self.selected_index == 0:
-                # "Créer" selected
                 text_input_view = TextInputView(self)
                 self.window.show_view(text_input_view)
             elif self.selected_index == 1:
-                # "Modifier" selected
                 select_edit_view = SelectLevelToEditView(self)
                 self.window.show_view(select_edit_view)
         elif key == arcade.key.ESCAPE:

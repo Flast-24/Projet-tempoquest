@@ -20,15 +20,14 @@ class TextInputView(arcade.View):
         
         arcade.draw_text("Nom du niveau:", SCREEN_W / 2, SCREEN_H / 2 + 100,
                          arcade.color.WHITE, font_size=30, anchor_x="center")
-
-        # Display the text being typed
+        
         arcade.draw_text(self.text, SCREEN_W / 2, SCREEN_H / 2,
                          arcade.color.WHITE, font_size=35, anchor_x="center")
         
-        # Display blinking cursor
-        if len(self.text) < 20: # Limit cursor blink to max length
+
+        if len(self.text) < 20:
             if int(arcade.get_window().time) % 2 == 0:
-                text_width = len(self.text) * 20 # Approximate width
+                text_width = len(self.text) * 20
                 arcade.draw_line(SCREEN_W/2 + text_width/2 + 5, SCREEN_H/2 - 5,
                                  SCREEN_W/2 + text_width/2 + 5, SCREEN_H/2 + 25,
                                  arcade.color.WHITE, 2)
@@ -50,9 +49,7 @@ class TextInputView(arcade.View):
             self.text = self.text[:-1]
 
     def on_text(self, text):
-        # Append the character to the text
-        if len(self.text) < 20: # Arbitrary limit
-            # a-z, 0-9, underscore and hyphen allowed
+        if len(self.text) < 20:
             if re.match("^[a-zA-Z0-9_ -]*$", text):
                 self.text += text
     
@@ -62,17 +59,14 @@ class TextInputView(arcade.View):
             self.error_message = "Le nom ne peut pas être vide."
             return
         
-        # Simple sanitization
         level_name = re.sub(r'[^a-zA-Z0-9_ -]', '', level_name).lower()
 
         if level_name in ["level1", "level_editor"]:
             self.error_message = "Ce nom de niveau est réservé."
             return
 
-        # All checks passed, clear error and proceed
         self.error_message = ""
         
-        # We pass the editor menu view, which the editor will return to
         editor_view = LevelEditorView(level_name, self.editor_menu_view)
         editor_view.setup()
         self.window.show_view(editor_view)

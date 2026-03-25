@@ -22,7 +22,6 @@ class SelectLevelToEditView(arcade.View):
         self.levels = sorted([f.stem for f in level_files if f.stem not in ["level1", "level_editor"]])
         if not self.levels:
             self.message = "Aucun niveau personnalisé trouvé."
-        # Reset selected_index to prevent index out of bounds after deleting the last level
         self.selected_index = 0
 
 

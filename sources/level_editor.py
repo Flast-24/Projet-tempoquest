@@ -25,7 +25,6 @@ class LevelEditorView(arcade.View):
     def on_show_view(self):
         arcade.set_background_color(arcade.color.BLACK)
         
-        # Grid
         self.grid.clear()
         for x in range(0, self.window.width, 50):
             for y in range(0, self.window.height, 50):
@@ -35,29 +34,24 @@ class LevelEditorView(arcade.View):
                 self.grid.append(sprite)
 
     def setup(self):
-        # Cursor
         cursor = _create_sprite(50, arcade.color.WHITE, alpha=100)
         self.cursor_list.append(cursor)
 
-        # Load existing level data if it exists
         level_data = level_manager.load_level(self.level_name)
         if level_data:
             self.max_ghosts = level_data.get("max_ghosts", 3)
-            # Load walls
             for wall_data in level_data["walls"]:
                 wall = _create_sprite(50, arcade.color.DARK_GREEN)
                 wall.center_x = wall_data["position"][0]
                 wall.center_y = wall_data["position"][1]
                 self.walls.append(wall)
             
-            # Load start
             if "start" in level_data:
                 start = _create_sprite(50, arcade.color.BLUE)
                 start.center_x = level_data["start"][0]
                 start.center_y = level_data["start"][1]
                 self.start_list.append(start)
 
-            # Load end
             if "end" in level_data:
                 end = _create_sprite(50, arcade.color.GOLD)
                 end.center_x = level_data["end"][0]
@@ -91,7 +85,6 @@ class LevelEditorView(arcade.View):
 
     def on_mouse_press(self, x, y, button, modifiers):
         if button == arcade.MOUSE_BUTTON_LEFT:
-            # Check if wall already exists
             if len(arcade.get_sprites_at_point(self.cursor_list[0].position, self.walls)) > 0:
                 return
             wall = _create_sprite(50, arcade.color.DARK_GREEN)

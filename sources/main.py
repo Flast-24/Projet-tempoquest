@@ -9,7 +9,6 @@ class MyWindow(arcade.Window):
         self.game_width = width
         self.game_height = height
         self.set_vsync(True)
-        # Force an initial resize event
         self.on_resize(self.width, self.height)
 
     def on_resize(self, width: int, height: int):
@@ -19,13 +18,11 @@ class MyWindow(arcade.Window):
         window_aspect_ratio = width / height
         
         if window_aspect_ratio > game_aspect_ratio:
-            # Window is wider
             view_width = int(game_aspect_ratio * height)
             view_height = height
             x_offset = (width - view_width) // 2
             y_offset = 0
         else:
-            # Window is taller
             view_width = width
             view_height = int(width / game_aspect_ratio)
             x_offset = 0

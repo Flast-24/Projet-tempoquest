@@ -10,7 +10,6 @@ def load_level(level_name):
         try:
             return json.load(f)
         except json.JSONDecodeError:
-            # The file is empty or malformed
             return None
 
 def create_walls_from_data(level_data):

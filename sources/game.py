@@ -30,7 +30,7 @@ class GameView(arcade.View):
         arcade.set_background_color(arcade.color.BLACK)
 
     def setup(self):
-        self.ghosts.clear() # Clear existing ghosts for a full reset
+        self.ghosts.clear()
         self.level_data = level_manager.load_level(self.level_name)
         
         if not self.level_data:
@@ -107,7 +107,6 @@ class GameView(arcade.View):
         if not self.win:
             self.physics.update()
 
-            # Check if player has fallen off the screen
             if self.player.center_y < 0:
                 self.setup()
                 return
@@ -131,7 +130,7 @@ class GameView(arcade.View):
         if key == arcade.key.ESCAPE:
             self.window.show_view(self.menu_view)
         elif key == arcade.key.T:
-            self.setup() # Full reset
+            self.setup()
 
         elif key == arcade.key.UP and self.physics.can_jump():
             self.player.change_y = JUMP_SPEED
