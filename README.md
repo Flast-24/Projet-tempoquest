@@ -41,7 +41,7 @@ Ce projet met en œuvre plusieurs concepts du programme de NSI :
 
 ## 📸 Captures d'écran
 
-![Uploading image.png…]()
+![Screenshot](./data/images/Screenshot - 2026-03-26 13-24-06.png
 
 
 ## 📜 Licence
