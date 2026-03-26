@@ -41,7 +41,7 @@ Ce projet met en œuvre plusieurs concepts du programme de NSI :
 
 ## 📸 Captures d'écran
 
-![](une image)
+![Screenshot](Screenshot_README.png)
 
 ## 📜 Licence
 
