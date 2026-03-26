@@ -21,6 +21,7 @@ class GameView(arcade.View):
         self.level_found = True
         self.max_ghosts = 0
         self.ghosts_left = 0
+        self.save_sound = arcade.load_sound("data/assets/audios/savepoint.mp3")
 
     def on_show_view(self):
         arcade.set_background_color(arcade.color.BLACK)
@@ -137,6 +138,7 @@ class GameView(arcade.View):
             
         elif key == arcade.key.R:
             if self.ghosts_left > 0:
+                arcade.play_sound(self.save_sound)
                 ghost = Ghost(self.player.center_x, self.player.center_y)
                 self.ghosts.append(ghost)
                 self.ghosts_left -= 1
