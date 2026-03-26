@@ -21,7 +21,8 @@ class GameView(arcade.View):
         self.level_found = True
         self.max_ghosts = 0
         self.ghosts_left = 0
-        self.save_sound = arcade.load_sound("data/assets/audios/savepoint.mp3")
+        self.sound_ghost = arcade.load_sound("data/assets/audios/Ghost.mp3")
+        self.sound_reload = arcade.load_sound("data/assets/audios/Reload.mp3")
 
     def on_show_view(self):
         arcade.set_background_color(arcade.color.BLACK)
@@ -127,6 +128,7 @@ class GameView(arcade.View):
         if key == arcade.key.ESCAPE:
             self.window.show_view(self.menu_view)
         elif key == arcade.key.T:
+            arcade.play_sound(self.sound_reload)
             self.setup()
 
         elif key == arcade.key.UP and self.physics.can_jump():
@@ -138,7 +140,7 @@ class GameView(arcade.View):
             
         elif key == arcade.key.R:
             if self.ghosts_left > 0:
-                arcade.play_sound(self.save_sound)
+                arcade.play_sound(self.sound_ghost)
                 ghost = Ghost(self.player.center_x, self.player.center_y)
                 self.ghosts.append(ghost)
                 self.ghosts_left -= 1
