@@ -41,8 +41,7 @@ Ce projet met en œuvre plusieurs concepts du programme de NSI :
 
 ## 📸 Captures d'écran
 
-> **À FAIRE :** N'oubliez pas de remplacer l'image ci-dessous par une capture d'écran de votre jeu !
-![Aperçu du projet](lien_vers_image.png)
+![]("data\assets\images\Screenshot - 2026-03-26 13-24-06.png")
 
 ## 📜 Licence
 
