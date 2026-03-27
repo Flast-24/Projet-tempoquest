@@ -38,6 +38,7 @@ Ce projet met en œuvre plusieurs concepts du programme de NSI :
     ```sh
     python sources/main.py
     ```
+4.  **Si problème d'échelle :** Si vous ne voyez pas l'entièreté des menus et du jeu, vous devez mettre la résolution de l'écran en 1920x1080 et la mise à échelle (ou autre paramètre augmentant la taille du texte et des application) sur 100%.
 
 ## 📸 Captures d'écran
 
