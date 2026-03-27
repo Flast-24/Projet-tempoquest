@@ -40,6 +40,15 @@
 - **Difficultés rencontrées et solutions apportées :**
     - **Prise en main de la bibliothèque Arcade :** C'était la première fois que l'équipe utilisait Arcade. Un temps d'adaptation a été nécessaire pour en comprendre le fonctionnement, notamment pour la gestion des "Views" et de la physique.
     - **Développement de l'éditeur de niveaux :** La création d'une interface complète pour l'éditeur (sauvegarde, chargement, modification des noms) a représenté un défi de conception et de logique de programmation non négligeable.
+- **Utilisation de l'intelligence artificiel** : Oui, l'intelligence artificielle a été un outil d'assistance tout au long de ce projet, intervenant à la fois sur des aspects de conception et sur des points techniques spécifiques.
+
+- **Conception de la Mécanique de Jeu :** Au départ, plusieurs idées de gameplay ont été explorées. L'IA a été utilisée comme un partenaire de brainstorming pour affiner le concept de "fantôme temporel". C'est cette collaboration qui a mené à la mécanique centrale du jeu : la capacité du joueur à laisser derrière lui un bloc solide (un "fantôme") pour s'en servir comme plateforme, transformant ainsi la résolution des niveaux en un puzzle de création.
+
+- **Optimisation des Contrôles du Joueur :** Pour la base du jeu, notamment le système de personnage qui bouge, nous avons utilisé l'IA pour nous aider à ajuster et à équilibrer les paramètres du moteur physique (gravité, vitesse de déplacement, force du saut). L'objectif était d'obtenir des contrôles qui soient à la fois réactifs, précis et agréables pour le joueur.
+
+- **Structure de l'Éditeur de Niveaux et des Données :** L'IA a fourni une aide précieuse dans la conception de l'éditeur de niveaux. Elle a assisté à la structuration du format de sauvegarde en JSON, en s'assurant que celui-ci soit à la fois simple à lire et capable de stocker toutes les informations nécessaires (positions des murs, points de départ/arrivée, nombre de fantômes autorisés).
+
+- **Logique de la Boucle de Jeu :** L'IA a été consultée pour l'écriture de la structure de base de la boucle de jeu principale, y compris la gestion des différents états (jeu en cours, écran de victoire) et la mise en place de la logique de détection de collision, notamment avec le bloc de fin qui valide la réussite d'un niveau.
 
 ### Ouverture
 
